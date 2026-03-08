@@ -2,5 +2,5 @@
 
 namespace ReverseVendingMachine.Models
 {
-    internal record ScannedItem(ItemType ItemType, decimal Value);
+    internal record ScannedItem(ItemType ItemType, DateTime time, decimal Value);
 }

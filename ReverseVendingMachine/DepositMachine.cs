@@ -12,15 +12,22 @@ namespace ReverseVendingMachine
         private DepositingSession? depositingSession;
         private IScannedItemFactory scannedItemFactory;
         private IScreen screen;
+        private IDepositMachineLogger logger;
 
         internal bool SessionInProgress => depositingSession is not null;
 
-        internal DepositMachine(IScanner scanner, IReceiptPrinter receiptPrinter, IScannedItemFactory scannedItemFactory, IScreen screen)
+        internal DepositMachine(
+            IScanner scanner,
+            IReceiptPrinter receiptPrinter,
+            IScannedItemFactory scannedItemFactory,
+            IScreen screen,
+            IDepositMachineLogger logger)
         {
             this.scanner = scanner;
             this.receiptPrinter = receiptPrinter;
             this.scannedItemFactory = scannedItemFactory;
             this.screen = screen;
+            this.logger = logger;
 
             SubscribeToScanner(scanner);
             screen.ShowWelcomeMessage();
@@ -41,7 +48,7 @@ namespace ReverseVendingMachine
             }
         }
 
-        internal void PrintReceipt()
+        internal void EndSessionAndPrintReceipt()
         {
             if (depositingSession is null)
             {
@@ -49,10 +56,8 @@ namespace ReverseVendingMachine
             }
 
             receiptPrinter.PrintReceipt(depositingSession);
-        }
+            logger.LogReceptPrinted(depositingSession);
 
-        internal void EndCurrentSession()
-        {
             depositingSession = null;
             screen.ShowWelcomeMessage();
         }
@@ -63,6 +68,7 @@ namespace ReverseVendingMachine
 
             var scannedItem = scannedItemFactory.CreateScannedItem(itemType);
             depositingSession.AddScannedItem(scannedItem);
+            logger.LogItemDeposited(scannedItem);
             screen.UpdateRecyclingState(depositingSession);
         }
 

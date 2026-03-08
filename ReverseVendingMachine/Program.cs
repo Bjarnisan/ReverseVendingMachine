@@ -1,5 +1,6 @@
 ﻿using ReverseVendingMachine.Enums;
 using ReverseVendingMachine.Factories;
+using ReverseVendingMachine.Logging;
 using ReverseVendingMachine.Scanner;
 using ReverseVendingMachine.UI;
 
@@ -28,8 +29,7 @@ namespace ReverseVendingMachine
                     case ConsoleKey.P:
                         if (machine.SessionInProgress)
                         {
-                            machine.PrintReceipt();
-                            machine.EndCurrentSession();
+                            machine.EndSessionAndPrintReceipt();
                         }
                         else
                         {
@@ -62,8 +62,9 @@ namespace ReverseVendingMachine
             var printer = new ReceiptPrinterConsole();
             var itemFactory = new ScannedItemFactory();
             var screen = new ConsoleScreen();
+            var logger = new ConsoleDepositMachineLogger();
 
-            var machine = new DepositMachine(scanner, printer, itemFactory, screen);
+            var machine = new DepositMachine(scanner, printer, itemFactory, screen, logger);
             return (scanner, machine);
         }
     }
