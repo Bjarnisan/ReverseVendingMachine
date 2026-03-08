@@ -1,8 +1,5 @@
 ﻿using ReverseVendingMachine.Interfaces;
 using ReverseVendingMachine.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ReverseVendingMachine.Logging
 {
@@ -12,17 +9,16 @@ namespace ReverseVendingMachine.Logging
         public async Task LogItemDepositedAsync(ScannedItem item)
         {
             // delay to simulate server delay
-            await Task.Delay(30 + Random.Shared.Next() % 30);
+            await Task.Delay(Random.Shared.Next(30, 60));
             Console.WriteLine(
                 $"Logged to server:\n" +
-                $"Item: {item.ItemType} scanned at {item.time.ToString()}");
+                $"Item: {item.ItemType} scanned at {item.time:O}");
         }
 
-        public async Task LogReceptPrintedAsync(DepositingSession depositingSession)
+        public async Task LogReceiptPrintedAsync(DepositingSession depositingSession)
         {
             // delay to simulate server delay
-            await Task.Delay(30 + Random.Shared.Next() % 30);
-
+            await Task.Delay(Random.Shared.Next(30, 60));
             Console.WriteLine(
                 $"Server log:\n" +
                 $"Recept given for: {depositingSession.NumberOfCans + depositingSession.NumberOfBottles} items" +

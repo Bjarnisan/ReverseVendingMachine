@@ -65,7 +65,7 @@ namespace ReverseVendingMachine
             }
 
             receiptPrinter.PrintReceipt(depositSessionForPrint);
-            logger.LogReceptPrintedAsync(depositSessionForPrint);
+            logger.LogReceiptPrintedAsync(depositSessionForPrint);
 
             screen.ShowWelcomeMessage();
         }
@@ -121,6 +121,7 @@ namespace ReverseVendingMachine
             scanner.Dispose();
             receiptPrinter.Dispose();
             screen.Dispose();
+            logger.Dispose();
 
             disposed = true;
         }
