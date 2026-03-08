@@ -12,8 +12,8 @@ dotnet run
 
 | Key | Action |
 |-----|--------|
-| `C` | Deposit a can 2 kr |
-| `B` | Deposit a bottle 3 kr |
+| `C` | Deposit a can (2 kr) |
+| `B` | Deposit a bottle (3 kr) |
 | `P` | Print receipt and end session |
 | `R` | Restart the machine |
 | `Q` | Quit |
@@ -23,13 +23,15 @@ dotnet run
 | File | Responsibility |
 |------|---------------|
 | `Program.cs` | Entry point; reads keyboard input and drives the machine |
-| `ReverseVendingMachine.cs` | Core machine logic; subscribes to scanner events and manages sessions |
-| `SimulatedScanner.cs` | Simulates an async hardware scanner with state and events |
-| `ScannedItemFactory.cs` | Creates `ScannedItem` instances with the correct deposit value |
-| `ScannedItem.cs` | Immutable record holding an item's type and deposit value |
-| `DepositingSession.cs` | Accumulates all scanned items and computes totals for one session |
-| `ReceiptPrinterConsole.cs` | Formats and prints the session summary to the console |
-| `ConsoleScreen.cs` | Manages all other console UI messages and state displays |
+| `DepositMachine.cs` | Core machine logic; subscribes to scanner events and manages sessions |
+| `Scanner/SimulatedScanner.cs` | Simulates an async hardware scanner with thread-safe state and events |
+| `Factories/ScannedItemFactory.cs` | Creates `ScannedItem` instances with the correct deposit value |
+| `Models/ScannedItem.cs` | Immutable record holding an item's type, timestamp, and deposit value |
+| `Models/DepositingSession.cs` | Accumulates all scanned items and computes totals for one session |
+| `UI/ReceiptPrinterConsole.cs` | Formats and prints the session summary to the console |
+| `UI/ConsoleScreen.cs` | Manages all other console UI messages and state displays |
+| `Logging/ConsoleDepositMachineLogger.cs` | Simulates async server logging for deposited items and printed receipts |
+| `Interfaces/` | Contracts for all major components, enabling loose coupling |
 
 ## Architecture
 
@@ -38,17 +40,17 @@ graph TB
     User((User)) -->|key press| Program
 
     Program -->|triggers| Scanner[SimulatedScanner]
-    Program -->|controls| RVM[ReverseVendingMachine]
+    Program -->|controls| DM[DepositMachine]
 
-    Scanner -->|scan events| RVM
+    Scanner -->|scan events| DM
 
     subgraph Session
         Factory[ScannedItemFactory] -->|creates| Item[ScannedItem]
         Item -->|collected in| DS[DepositingSession]
     end
 
-    RVM -->|shows bottles collected| Session
-
-    RVM -->|shows status| Screen[ConsoleScreen]
-    RVM -->|prints via| Printer[ReceiptPrinterConsole]
+    DM -->|manages| Session
+    DM -->|shows status| Screen[ConsoleScreen]
+    DM -->|prints via| Printer[ReceiptPrinterConsole]
+    DM -->|logs to| Logger[ConsoleDepositMachineLogger]
 ```

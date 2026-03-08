@@ -16,10 +16,7 @@ namespace ReverseVendingMachine.Scanner
         {
             get
             {
-                lock (scanningStateLock)
-                {
-                    return scannerState_backing;
-                }
+                return scannerState_backing;
             }
             private set
             {
@@ -61,7 +58,9 @@ namespace ReverseVendingMachine.Scanner
                     break;
                 case ItemType.InvalidItem:
                     await Task.Delay(2000);
-                    break;
+                    ScanFailed?.Invoke(this, FailedScanReason.InvalidItem);
+                    ScanningState = ScannerState.ReadyToScan;
+                    return;
                 case ItemType.Unknown:
                     break;
                 default:
@@ -78,6 +77,7 @@ namespace ReverseVendingMachine.Scanner
         public void Dispose()
         {
             // nothing to dispose
+            GC.SuppressFinalize(this);
         }
     }
 }

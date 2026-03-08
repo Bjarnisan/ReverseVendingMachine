@@ -44,13 +44,10 @@ namespace ReverseVendingMachine
                         break;
                     case ConsoleKey.Q:
                         return;
+                    case ConsoleKey.I:
+                        _ = Task.Run(() => scanner.ScanItemAsync(ItemType.InvalidItem));
+                        break;
                     default:
-                        var type = ItemType.Unknown;
-                        if (Random.Shared.Next() % 10 == 0)
-                        {
-                            type = ItemType.InvalidItem;
-                        }
-                        await Task.Run(() => scanner.ScanItemAsync(type));
                         break;
                 }
             }

@@ -12,7 +12,7 @@ namespace ReverseVendingMachine.Logging
             await Task.Delay(Random.Shared.Next(30, 60));
             Console.WriteLine(
                 $"Logged to server:\n" +
-                $"Item: {item.ItemType} scanned at {item.time:O}");
+                $"Item: {item.ItemType} scanned at {item.Time:O}");
         }
 
         public async Task LogReceiptPrintedAsync(DepositingSession depositingSession)
@@ -21,13 +21,14 @@ namespace ReverseVendingMachine.Logging
             await Task.Delay(Random.Shared.Next(30, 60));
             Console.WriteLine(
                 $"Server log:\n" +
-                $"Recept given for: {depositingSession.NumberOfCans + depositingSession.NumberOfBottles} items" +
+                $"Receipt given for: {depositingSession.NumberOfCans + depositingSession.NumberOfBottles} items" +
                     $" valued at NOK {depositingSession.TotalValue}");
         }
 
         public void Dispose()
         {
             // nothing to dispose
+            GC.SuppressFinalize(this);
         }
     }
 }

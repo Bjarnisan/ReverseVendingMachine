@@ -22,6 +22,7 @@ namespace ReverseVendingMachine.UI
         public void Dispose()
         {
             // nothing to dispose
+            GC.SuppressFinalize(this);
         }
     }
 }

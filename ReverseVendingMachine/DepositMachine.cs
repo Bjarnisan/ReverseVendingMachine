@@ -7,12 +7,12 @@ namespace ReverseVendingMachine
     internal class DepositMachine : IDisposable
     {
         private bool disposed = false;
-        private IScanner scanner;
-        private IReceiptPrinter receiptPrinter;
+        private readonly IScanner scanner;
+        private readonly IReceiptPrinter receiptPrinter;
+        private readonly IScannedItemFactory scannedItemFactory;
+        private readonly IScreen screen;
+        private readonly IDepositMachineLogger logger;
         private DepositingSession? depositingSession;
-        private IScannedItemFactory scannedItemFactory;
-        private IScreen screen;
-        private IDepositMachineLogger logger;
         private Lock depositSessionLock = new();
 
         internal bool SessionInProgress => depositingSession is not null;
@@ -72,10 +72,16 @@ namespace ReverseVendingMachine
 
         private void OnScanner_ItemScanned(object? sender, ItemType itemType)
         {
-            depositingSession ??= new();
+            ScannedItem scannedItem;
+            lock (depositSessionLock)
+            {
+                depositingSession ??= new();
 
-            var scannedItem = scannedItemFactory.CreateScannedItem(itemType);
-            depositingSession.AddScannedItem(scannedItem);
+                scannedItem = scannedItemFactory.CreateScannedItem(itemType);
+
+                depositingSession.AddScannedItem(scannedItem);
+            }
+
             logger.LogItemDepositedAsync(scannedItem);
             screen.UpdateRecyclingState(depositingSession);
         }
