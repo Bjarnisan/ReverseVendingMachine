@@ -4,16 +4,21 @@ A console application that simulates a reverse vending machine — a device wher
 
 ## How to Run
 
-```
+``` commandline
 dotnet run
 ```
+
+## Assumptions
+
+I'm assuming there is some underlying hardware that triggers events as cans and boxes are placed in the machine. Since I don't know the api for that, I made an abstraction that somewhat simulates how I imagine it would work.
 
 ## Controls
 
 | Key | Action |
-|-----|--------|
+| ----- | -------- |
 | `C` | Deposit a can (2 kr) |
 | `B` | Deposit a bottle (3 kr) |
+| `I` | Invalid item |
 | `P` | Print receipt and end session |
 | `R` | Restart the machine |
 | `Q` | Quit |

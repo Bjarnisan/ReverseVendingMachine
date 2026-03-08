@@ -31,7 +31,7 @@ namespace ReverseVendingMachine
             this.logger = logger;
 
             SubscribeToScanner(scanner);
-            screen.ShowWelcomeMessage();
+            screen.ShowWelcomeScreen();
         }
 
         private void OnScanner_ScanFailed(object? sender, FailedScanReason failedReason)
@@ -44,7 +44,11 @@ namespace ReverseVendingMachine
                 case FailedScanReason.Unknown:
                     screen.ContactSupportMessage();
                     break;
+                case FailedScanReason.InvalidItem:
+                    screen.InvalidItemScreen(depositingSession);
+                    break;
                 default:
+                    screen.ContactSupportMessage();
                     break;
             }
         }
@@ -67,7 +71,7 @@ namespace ReverseVendingMachine
             receiptPrinter.PrintReceipt(depositSessionForPrint);
             logger.LogReceiptPrintedAsync(depositSessionForPrint);
 
-            screen.ShowWelcomeMessage();
+            screen.ShowWelcomeScreen();
         }
 
         private void OnScanner_ItemScanned(object? sender, ItemType itemType)
