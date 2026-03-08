@@ -1,4 +1,4 @@
-namespace ReverseVendingMachine
+namespace ReverseVendingMachine.interfaces
 {
     public interface IScanner : IDisposable
     {
