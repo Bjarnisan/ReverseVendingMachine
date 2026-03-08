@@ -1,4 +1,4 @@
-namespace ReverseVendingMachine.interfaces
+namespace ReverseVendingMachine.Interfaces
 {
     internal interface IScreen : IDisposable
     {

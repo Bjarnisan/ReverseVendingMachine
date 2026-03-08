@@ -1,6 +1,6 @@
 using ReverseVendingMachine.Enums;
 
-namespace ReverseVendingMachine.interfaces
+namespace ReverseVendingMachine.Interfaces
 {
     internal interface IScannedItemFactory
     {
