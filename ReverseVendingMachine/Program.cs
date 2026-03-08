@@ -1,4 +1,6 @@
-﻿namespace ReverseVendingMachine
+﻿using ReverseVendingMachine.enums;
+
+namespace ReverseVendingMachine
 {
     internal class Program
     {

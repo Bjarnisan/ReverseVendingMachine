@@ -1,4 +1,5 @@
-﻿using ReverseVendingMachine.interfaces;
+﻿using ReverseVendingMachine.enums;
+using ReverseVendingMachine.interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,19 +7,6 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    public enum FailedScanReason
-    {
-        ScannerBusy,
-        Unknown
-    }
-
-    public enum ScannerState
-    {
-        ReadyToScan,
-        ScanningItem,
-        InErrorState
-    }
-
     internal class SimulatedScanner : IScanner
     {
         private ScannerState scannerState_backing = ScannerState.ReadyToScan;

@@ -1,3 +1,5 @@
+using ReverseVendingMachine.enums;
+
 namespace ReverseVendingMachine.interfaces
 {
     public interface IScannedItemFactory
