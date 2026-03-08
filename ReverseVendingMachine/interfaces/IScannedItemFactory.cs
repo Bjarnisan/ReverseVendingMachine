@@ -2,8 +2,8 @@ using ReverseVendingMachine.enums;
 
 namespace ReverseVendingMachine.interfaces
 {
-    public interface IScannedItemFactory
+    internal interface IScannedItemFactory
     {
-        public ScannedItem CreateScannedItem(ItemType type);
+        ScannedItem CreateScannedItem(ItemType type);
     }
 }

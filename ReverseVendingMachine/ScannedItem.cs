@@ -5,5 +5,5 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    public record ScannedItem(ItemType ItemType, decimal Value);
+    internal record ScannedItem(ItemType ItemType, decimal Value);
 }

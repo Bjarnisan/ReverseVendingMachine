@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    public class ReceiptPrinterConsole : IReceiptPrinter, IDisposable
+    internal class ReceiptPrinterConsole : IReceiptPrinter, IDisposable
     {
         public void PrintReceipt(DepositingSession depositingSession)
         {

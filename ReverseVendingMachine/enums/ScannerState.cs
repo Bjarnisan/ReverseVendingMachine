@@ -1,6 +1,6 @@
 namespace ReverseVendingMachine.enums
 {
-    public enum ScannerState
+    internal enum ScannerState
     {
         ReadyToScan,
         ScanningItem,

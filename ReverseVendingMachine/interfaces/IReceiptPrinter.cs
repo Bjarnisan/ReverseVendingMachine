@@ -1,7 +1,7 @@
 namespace ReverseVendingMachine.interfaces
 {
-    public interface IReceiptPrinter : IDisposable
+    internal interface IReceiptPrinter : IDisposable
     {
-        public void PrintReceipt(DepositingSession depositingSession);
+        void PrintReceipt(DepositingSession depositingSession);
     }
 }

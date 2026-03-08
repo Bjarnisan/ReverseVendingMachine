@@ -1,6 +1,6 @@
 namespace ReverseVendingMachine.enums
 {
-    public enum FailedScanReason
+    internal enum FailedScanReason
     {
         ScannerBusy,
         Unknown

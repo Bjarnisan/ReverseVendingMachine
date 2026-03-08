@@ -2,12 +2,12 @@ using ReverseVendingMachine.enums;
 
 namespace ReverseVendingMachine.interfaces
 {
-    public interface IScanner : IDisposable
+    internal interface IScanner : IDisposable
     {
-        public event EventHandler<ScannerState>? ScannerStateChanged;
-        public event EventHandler<ItemType>? ItemScanned;
-        public event EventHandler<FailedScanReason>? ScanFailed;
+        event EventHandler<ScannerState>? ScannerStateChanged;
+        event EventHandler<ItemType>? ItemScanned;
+        event EventHandler<FailedScanReason>? ScanFailed;
 
-        public ScannerState ScanningState { get; }
+        ScannerState ScanningState { get; }
     }
 }

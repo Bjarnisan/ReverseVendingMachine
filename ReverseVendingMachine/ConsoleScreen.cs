@@ -7,14 +7,14 @@ namespace ReverseVendingMachine
 {
     internal class ConsoleScreen : IScreen, IDisposable
     {
-        public ConsoleScreen() { }
+        internal ConsoleScreen() { }
 
         public void ShowWelcomeMessage()
         {
             Console.WriteLine();
-            Console.WriteLine("Press \"b\" to deposit a bottle");
-            Console.WriteLine("Press \"c\" to deposit a can");
-            Console.WriteLine("Press \"p\" to print a receipt");
+            Console.WriteLine("Press \"B\" to deposit a bottle");
+            Console.WriteLine("Press \"C\" to deposit a can");
+            Console.WriteLine("Press \"P\" to print a receipt");
             Console.WriteLine();
         }
 
@@ -29,7 +29,7 @@ namespace ReverseVendingMachine
         {
             Console.Clear();
             Console.WriteLine("Unknown error. Contact staff");
-            Console.WriteLine("Press \r\" to re-start machine");
+            Console.WriteLine("Press \"R\" to re-start machine");
             Console.WriteLine();
         }
 
@@ -41,7 +41,7 @@ namespace ReverseVendingMachine
                 $"Bottles: {session.NumberOfBottles}\n" +
                 $"Total: {session.TotalValue:F2}");
             Console.WriteLine();
-            Console.WriteLine("Press \"p\" when finished to print a receipt");
+            Console.WriteLine("Press \"P\" when finished to print a receipt");
         }
 
         public void ShowReadyToScan()

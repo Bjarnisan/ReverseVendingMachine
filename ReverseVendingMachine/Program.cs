@@ -4,7 +4,7 @@ namespace ReverseVendingMachine
 {
     internal class Program
     {
-        private static ReverseVendingMachine? machine;
+        private static DepositMachine? machine;
         private static SimulatedScanner? scanner;
 
         static async Task Main(string[] args)
@@ -62,7 +62,7 @@ namespace ReverseVendingMachine
             var itemFactory = new ScannedItemFactory();
             var screen = new ConsoleScreen();
 
-            machine = new ReverseVendingMachine(scanner, printer, itemFactory, screen);
+            machine = new DepositMachine(scanner, printer, itemFactory, screen);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    internal class ReverseVendingMachine : IDisposable
+    internal class DepositMachine : IDisposable
     {
         private bool disposed = false;
         private IScanner scanner;
@@ -16,9 +16,9 @@ namespace ReverseVendingMachine
         private IScannedItemFactory scannedItemFactory;
         private IScreen screen;
 
-        public bool SessionInProgress => depositingSession is not null;
+        internal bool SessionInProgress => depositingSession is not null;
 
-        public ReverseVendingMachine(IScanner scanner, IReceiptPrinter receiptPrinter, IScannedItemFactory scannedItemFactory, IScreen screen)
+        internal DepositMachine(IScanner scanner, IReceiptPrinter receiptPrinter, IScannedItemFactory scannedItemFactory, IScreen screen)
         {
             this.scanner = scanner;
             this.receiptPrinter = receiptPrinter;
@@ -44,7 +44,7 @@ namespace ReverseVendingMachine
             }
         }
 
-        public void PrintReceipt()
+        internal void PrintReceipt()
         {
             if (depositingSession is null)
             {
@@ -54,7 +54,7 @@ namespace ReverseVendingMachine
             receiptPrinter.PrintReceipt(depositingSession);
         }
 
-        public void EndCurrentSession()
+        internal void EndCurrentSession()
         {
             depositingSession = null;
             screen.ShowWelcomeMessage();

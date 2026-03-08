@@ -1,6 +1,6 @@
 namespace ReverseVendingMachine.enums
 {
-    public enum ItemType
+    internal enum ItemType
     {
         Can,
         Bottle,

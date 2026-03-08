@@ -1,12 +1,12 @@
 namespace ReverseVendingMachine.interfaces
 {
-    public interface IScreen : IDisposable
+    internal interface IScreen : IDisposable
     {
-        public void ShowWelcomeMessage();
-        public void ShowScanningItem();
-        public void ShowReadyToScan();
-        public void UpdateRecyclingState(DepositingSession session);
-        public void ScannerBusyWarning();
-        public void ContactSupportMessage();
+        void ShowWelcomeMessage();
+        void ShowScanningItem();
+        void ShowReadyToScan();
+        void UpdateRecyclingState(DepositingSession session);
+        void ScannerBusyWarning();
+        void ContactSupportMessage();
     }
 }
