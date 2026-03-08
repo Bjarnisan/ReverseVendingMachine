@@ -1,5 +1,6 @@
 ﻿using ReverseVendingMachine.Enums;
 using ReverseVendingMachine.Factories;
+using ReverseVendingMachine.Interfaces;
 using ReverseVendingMachine.Logging;
 using ReverseVendingMachine.Scanner;
 using ReverseVendingMachine.UI;
@@ -53,7 +54,7 @@ namespace ReverseVendingMachine
             }
         }
 
-        private static (SimulatedScanner scanner, DepositMachine machine) InitiateMachine()
+        private static (IScannerHardware scanner, DepositMachine machine) InitiateMachine()
         {
             var scanner = new SimulatedScanner();
             var printer = new ReceiptPrinterConsole();

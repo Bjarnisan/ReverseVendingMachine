@@ -3,7 +3,7 @@ using ReverseVendingMachine.Interfaces;
 
 namespace ReverseVendingMachine.Scanner
 {
-    internal class SimulatedScanner : IScanner
+    internal class SimulatedScanner : IScanner, IScannerHardware
     {
         private readonly Lock scanningStateLock = new();
         private ScannerState scannerState_backing = ScannerState.ReadyToScan;
@@ -28,7 +28,7 @@ namespace ReverseVendingMachine.Scanner
             }
         }
 
-        internal async Task ScanItemAsync(ItemType itemType)
+        public async Task ScanItemAsync(ItemType itemType)
         {
             lock (scanningStateLock)
             {
