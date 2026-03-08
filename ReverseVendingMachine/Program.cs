@@ -1,24 +1,19 @@
 ﻿using ReverseVendingMachine.Enums;
+using ReverseVendingMachine.Factories;
+using ReverseVendingMachine.Interfaces;
 using ReverseVendingMachine.Scanner;
+using ReverseVendingMachine.UI;
 
 namespace ReverseVendingMachine
 {
     internal class Program
     {
-        private static DepositMachine? machine;
-        private static SimulatedScanner? scanner;
-
         static async Task Main(string[] args)
         {
-            InitiateMachine();
+            var (scanner, machine) = InitiateMachine();
 
             while (true)
             {
-                if (scanner is null || machine is null)
-                {
-                    throw new InvalidOperationException("Machine failed to initialize.");
-                }
-
                 var command = Console.ReadKey();
 
                 switch (command.Key)
@@ -46,24 +41,25 @@ namespace ReverseVendingMachine
                         break;
                     case ConsoleKey.R:
                         machine.Dispose();
-                        InitiateMachine();
+                        (scanner, machine) = InitiateMachine();
                         break;
                     default:
                         await Task.Run(() => scanner.ScanItemAsync(ItemType.Unknown));
                         break;
                 }
-
             }
         }
 
-        private static void InitiateMachine()
+        private static (SimulatedScanner scanner, DepositMachine machine) InitiateMachine()
         {
-            scanner = new SimulatedScanner();
+            var scanner = new SimulatedScanner();
             var printer = new ReceiptPrinterConsole();
             var itemFactory = new ScannedItemFactory();
             var screen = new ConsoleScreen();
 
-            machine = new DepositMachine(scanner, printer, itemFactory, screen);
+            var machine = new DepositMachine(scanner, printer, itemFactory, screen);
+            return (scanner, machine);
         }
     }
 }
+
