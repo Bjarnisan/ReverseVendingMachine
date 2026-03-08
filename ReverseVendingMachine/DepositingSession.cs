@@ -4,11 +4,11 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    internal class DepositingSession
+    public class DepositingSession
     {
         private List<ScannedItem> items = new();
 
-        internal IReadOnlyCollection<ScannedItem> ScannedItems => items;
+        public IReadOnlyCollection<ScannedItem> ScannedItems => items;
 
         public decimal TotalValue => ScannedItems.Sum(item => item.Value);
 
@@ -16,7 +16,7 @@ namespace ReverseVendingMachine
 
         public int NumberOfBottles => ScannedItems.Count(item => item.ItemType == ItemType.Bottle);
 
-        internal void AddScannedItem(ScannedItem scannedItem)
+        public void AddScannedItem(ScannedItem scannedItem)
         {
             items.Add(scannedItem);
         }

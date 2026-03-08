@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    internal class ScannedItemFactory
+    internal class ScannedItemFactory : IScannedItemFactory
     {
-        internal ScannedItem CreateScannedItem(ItemType type)
+        public ScannedItem CreateScannedItem(ItemType type)
         {
             decimal value = type switch
             {

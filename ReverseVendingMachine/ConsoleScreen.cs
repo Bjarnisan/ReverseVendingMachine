@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    internal class ConsoleScreen : IDisposable
+    internal class ConsoleScreen : IScreen, IDisposable
     {
         public ConsoleScreen() { }
 
@@ -43,12 +43,12 @@ namespace ReverseVendingMachine
             Console.WriteLine("Press \"p\" when finished to print a receipt");
         }
 
-        internal void ShowReadyToScan()
+        public void ShowReadyToScan()
         {
             // not needed for this
         }
 
-        internal void ShowScanningItem()
+        public void ShowScanningItem()
         {
             Console.Clear();
             Console.Write("Scanning...");

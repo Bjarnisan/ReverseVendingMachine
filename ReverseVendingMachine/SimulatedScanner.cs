@@ -5,20 +5,20 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    enum FailedScanReason
+    public enum FailedScanReason
     {
         ScannerBusy,
         Unknown
     }
 
-    enum ScannerState
+    public enum ScannerState
     {
         ReadyToScan,
         ScanningItem,
         InErrorState
     }
 
-    internal class SimulatedScanner : IDisposable
+    internal class SimulatedScanner : IScanner
     {
         private ScannerState scannerState_backing = ScannerState.ReadyToScan;
 
@@ -36,7 +36,7 @@ namespace ReverseVendingMachine
             }
         }
 
-        internal async Task ScanItemAsync(ItemType itemType)
+        public async Task ScanItemAsync(ItemType itemType)
         {
             if (ScanningState == ScannerState.InErrorState)
             {

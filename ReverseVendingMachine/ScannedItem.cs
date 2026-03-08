@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ReverseVendingMachine
 {
-    enum ItemType
+    public enum ItemType
     {
         Can,
         Bottle,
@@ -12,5 +12,5 @@ namespace ReverseVendingMachine
         Unknown
     }
 
-    internal record ScannedItem(ItemType ItemType, decimal Value);
+    public record ScannedItem(ItemType ItemType, decimal Value);
 }

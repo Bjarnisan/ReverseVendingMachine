@@ -8,15 +8,15 @@ namespace ReverseVendingMachine
     internal class ReverseVendingMachine : IDisposable
     {
         private bool disposed = false;
-        private SimulatedScanner scanner;
-        private ReceiptPrinterConsole receiptPrinter;
+        private IScanner scanner;
+        private IReceiptPrinter receiptPrinter;
         private DepositingSession? depositingSession;
-        private ScannedItemFactory scannedItemFactory;
-        private ConsoleScreen screen;
+        private IScannedItemFactory scannedItemFactory;
+        private IScreen screen;
 
         public bool SessionInProgress => depositingSession is not null;
 
-        internal ReverseVendingMachine(SimulatedScanner scanner, ReceiptPrinterConsole receiptPrinter, ScannedItemFactory scannedItemFactory, ConsoleScreen screen)
+        public ReverseVendingMachine(IScanner scanner, IReceiptPrinter receiptPrinter, IScannedItemFactory scannedItemFactory, IScreen screen)
         {
             this.scanner = scanner;
             this.receiptPrinter = receiptPrinter;
@@ -83,14 +83,14 @@ namespace ReverseVendingMachine
         }
 
 
-        private void SubscribeToScanner(SimulatedScanner scanner)
+        private void SubscribeToScanner(IScanner scanner)
         {
             scanner.ScannerStateChanged += OnScanner_ScannerStateChanged;
             scanner.ItemScanned += OnScanner_ItemScanned;
             scanner.ScanFailed += OnScanner_ScanFailed;
         }
 
-        private void UnsubscribeToScanner(SimulatedScanner scanner)
+        private void UnsubscribeToScanner(IScanner scanner)
         {
             scanner.ScannerStateChanged -= OnScanner_ScannerStateChanged;
             scanner.ItemScanned -= OnScanner_ItemScanned;
