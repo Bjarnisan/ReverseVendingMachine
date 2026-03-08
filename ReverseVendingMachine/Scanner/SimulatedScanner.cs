@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace ReverseVendingMachine
+namespace ReverseVendingMachine.Scanner
 {
     internal class SimulatedScanner : IScanner
     {

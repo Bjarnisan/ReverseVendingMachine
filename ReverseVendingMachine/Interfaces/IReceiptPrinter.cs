@@ -1,3 +1,5 @@
+using ReverseVendingMachine.Models;
+
 namespace ReverseVendingMachine.Interfaces
 {
     internal interface IReceiptPrinter : IDisposable

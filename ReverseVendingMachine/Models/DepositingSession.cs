@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReverseVendingMachine
+namespace ReverseVendingMachine.Models
 {
     internal class DepositingSession
     {

@@ -1,4 +1,5 @@
 ﻿using ReverseVendingMachine.Enums;
+using ReverseVendingMachine.Scanner;
 
 namespace ReverseVendingMachine
 {
