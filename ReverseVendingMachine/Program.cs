@@ -1,4 +1,4 @@
-﻿using ReverseVendingMachine.enums;
+﻿using ReverseVendingMachine.Enums;
 
 namespace ReverseVendingMachine
 {

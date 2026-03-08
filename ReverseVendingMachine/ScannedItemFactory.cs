@@ -1,4 +1,4 @@
-﻿using ReverseVendingMachine.enums;
+﻿using ReverseVendingMachine.Enums;
 using ReverseVendingMachine.interfaces;
 using System;
 using System.Collections.Generic;
