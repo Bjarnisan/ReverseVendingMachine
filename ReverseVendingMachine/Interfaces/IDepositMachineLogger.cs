@@ -7,7 +7,7 @@ namespace ReverseVendingMachine.Interfaces
 {
     internal interface IDepositMachineLogger : IDisposable
     {
-        Task LogItemDeposited(ScannedItem item);
-        Task LogReceptPrinted(DepositingSession depositingSession);
+        Task LogItemDepositedAsync(ScannedItem item);
+        Task LogReceptPrintedAsync(DepositingSession depositingSession);
     }
 }

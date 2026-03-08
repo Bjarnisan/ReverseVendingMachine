@@ -4,6 +4,7 @@ namespace ReverseVendingMachine.Enums
     {
         ReadyToScan,
         ScanningItem,
+        ReadyToPrint,
         InErrorState
     }
 }

@@ -13,6 +13,7 @@ namespace ReverseVendingMachine
         private IScannedItemFactory scannedItemFactory;
         private IScreen screen;
         private IDepositMachineLogger logger;
+        private Lock depositSessionLock = new();
 
         internal bool SessionInProgress => depositingSession is not null;
 
@@ -50,15 +51,22 @@ namespace ReverseVendingMachine
 
         internal void EndSessionAndPrintReceipt()
         {
-            if (depositingSession is null)
+            DepositingSession depositSessionForPrint;
+
+            lock (depositSessionLock)
             {
-                return;
+                if (depositingSession is null)
+                {
+                    return;
+                }
+
+                depositSessionForPrint = depositingSession;
+                depositingSession = null;
             }
 
-            receiptPrinter.PrintReceipt(depositingSession);
-            logger.LogReceptPrinted(depositingSession);
+            receiptPrinter.PrintReceipt(depositSessionForPrint);
+            logger.LogReceptPrintedAsync(depositSessionForPrint);
 
-            depositingSession = null;
             screen.ShowWelcomeMessage();
         }
 
@@ -68,7 +76,7 @@ namespace ReverseVendingMachine
 
             var scannedItem = scannedItemFactory.CreateScannedItem(itemType);
             depositingSession.AddScannedItem(scannedItem);
-            logger.LogItemDeposited(scannedItem);
+            logger.LogItemDepositedAsync(scannedItem);
             screen.UpdateRecyclingState(depositingSession);
         }
 

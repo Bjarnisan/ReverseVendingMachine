@@ -15,7 +15,7 @@ namespace ReverseVendingMachine.Factories
                 ItemType.Unknown => 0,
                 _ => 0
             };
-            return new ScannedItem(type, value);
+            return new ScannedItem(type, DateTime.Now, value);
         }
     }
 }
