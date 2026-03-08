@@ -5,7 +5,7 @@ namespace ReverseVendingMachine.Scanner
 {
     internal class SimulatedScanner : IScanner
     {
-        private readonly SemaphoreSlim _scanningStateLock = new(1, 1);
+        private readonly Lock scanningStateLock = new();
         private ScannerState scannerState_backing = ScannerState.ReadyToScan;
 
         public event EventHandler<ScannerState>? ScannerStateChanged;
@@ -14,68 +14,70 @@ namespace ReverseVendingMachine.Scanner
 
         public ScannerState ScanningState
         {
-            get => scannerState_backing;
+            get
+            {
+                lock (scanningStateLock)
+                {
+                    return scannerState_backing;
+                }
+            }
             private set
             {
-                scannerState_backing = value;
-                ScannerStateChanged?.Invoke(this, scannerState_backing);
+                lock (scanningStateLock)
+                {
+                    scannerState_backing = value;
+                }
+                ScannerStateChanged?.Invoke(this, value);
             }
         }
 
         internal async Task ScanItemAsync(ItemType itemType)
         {
-            if (ScanningState == ScannerState.InErrorState)
+            lock (scanningStateLock)
             {
-                return;
-            }
-
-            if (!await _scanningStateLock.WaitAsync(0))
-            {
-                ScanFailed?.Invoke(this, FailedScanReason.ScannerBusy);
-                return;
-            }
-
-            try
-            {
-                if (ScanningState == ScannerState.InErrorState)
+                if (scannerState_backing == ScannerState.InErrorState)
                 {
                     return;
                 }
 
-                ScanningState = ScannerState.ScanningItem;
-
-                switch (itemType)
+                if (scannerState_backing == ScannerState.ScanningItem)
                 {
-                    case ItemType.Can:
-                        await Task.Delay(500);
-                        break;
-                    case ItemType.Bottle:
-                        await Task.Delay(1000);
-                        break;
-                    case ItemType.InvalidItem:
-                        await Task.Delay(2000);
-                        break;
-                    case ItemType.Unknown:
-                        break;
-                    default:
-                        // shouldn't be able to get here
-                        ScanFailed?.Invoke(this, FailedScanReason.Unknown);
-                        ScanningState = ScannerState.InErrorState;
-                        return;
+                    ScanFailed?.Invoke(this, FailedScanReason.ScannerBusy);
+                    return;
                 }
 
-                ScanningState = ScannerState.ReadyToScan;
-                ItemScanned?.Invoke(this, itemType);
+                scannerState_backing = ScannerState.ScanningItem;
             }
-            finally
+
+            ScannerStateChanged?.Invoke(this, ScannerState.ScanningItem);
+
+            switch (itemType)
             {
-                _scanningStateLock.Release();
+                case ItemType.Can:
+                    await Task.Delay(500);
+                    break;
+                case ItemType.Bottle:
+                    await Task.Delay(1000);
+                    break;
+                case ItemType.InvalidItem:
+                    await Task.Delay(2000);
+                    break;
+                case ItemType.Unknown:
+                    break;
+                default:
+                    // should not be reachable
+                    ScanFailed?.Invoke(this, FailedScanReason.Unknown);
+                    ScanningState = ScannerState.InErrorState;
+                    return;
             }
+
+            ScanningState = ScannerState.ReadyToScan;
+            ItemScanned?.Invoke(this, itemType);
         }
 
         public void Dispose()
         {
-            _scanningStateLock.Dispose();
+            // nothing to dispose
         }
     }
 }
