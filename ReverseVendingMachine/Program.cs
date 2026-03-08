@@ -1,6 +1,5 @@
 ﻿using ReverseVendingMachine.Enums;
 using ReverseVendingMachine.Factories;
-using ReverseVendingMachine.Interfaces;
 using ReverseVendingMachine.Scanner;
 using ReverseVendingMachine.UI;
 
@@ -14,7 +13,7 @@ namespace ReverseVendingMachine
 
             while (true)
             {
-                var command = Console.ReadKey();
+                var command = Console.ReadKey(true);
 
                 switch (command.Key)
                 {
@@ -43,8 +42,15 @@ namespace ReverseVendingMachine
                         machine.Dispose();
                         (scanner, machine) = InitiateMachine();
                         break;
+                    case ConsoleKey.Q:
+                        return;
                     default:
-                        await Task.Run(() => scanner.ScanItemAsync(ItemType.Unknown));
+                        var type = ItemType.Unknown;
+                        if (Random.Shared.Next() % 10 == 0)
+                        {
+                            type = ItemType.InvalidItem;
+                        }
+                        await Task.Run(() => scanner.ScanItemAsync(type));
                         break;
                 }
             }

@@ -25,7 +25,7 @@ namespace ReverseVendingMachine.Scanner
             }
         }
 
-        public async Task ScanItemAsync(ItemType itemType)
+        internal async Task ScanItemAsync(ItemType itemType)
         {
             if (ScanningState == ScannerState.InErrorState)
             {
@@ -38,8 +38,10 @@ namespace ReverseVendingMachine.Scanner
             }
             else if (ScanningState != ScannerState.ReadyToScan)
             {
+                // shouldn't be able to get here
                 ScanFailed?.Invoke(this, FailedScanReason.Unknown);
                 ScanningState = ScannerState.InErrorState;
+                return;
             }
 
             ScanningState = ScannerState.ScanningItem;
@@ -53,18 +55,15 @@ namespace ReverseVendingMachine.Scanner
                     await Task.Delay(1000);
                     break;
                 case ItemType.InvalidItem:
-
                     await Task.Delay(2000);
-                    if (Random.Shared.Next() % 10 == 0)
-                    {
-                        // There's a 10% chance of failing the machine when scanning non-complient item
-                        ScanFailed?.Invoke(this, FailedScanReason.Unknown);
-                        ScanningState = ScannerState.InErrorState;
-                        return;
-                    }
+                    break;
+                case ItemType.Unknown:
                     break;
                 default:
-                    break;
+                    // shouldn't be able to get here
+                    ScanFailed?.Invoke(this, FailedScanReason.Unknown);
+                    ScanningState = ScannerState.InErrorState;
+                    return;
             }
 
             ScanningState = ScannerState.ReadyToScan;

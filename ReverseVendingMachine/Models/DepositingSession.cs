@@ -1,5 +1,6 @@
 ﻿using ReverseVendingMachine.Enums;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace ReverseVendingMachine.Models
 {
     internal class DepositingSession
     {
-        private List<ScannedItem> items = new();
+        private ConcurrentBag<ScannedItem> items = new();
 
         internal IReadOnlyCollection<ScannedItem> ScannedItems => items;
 

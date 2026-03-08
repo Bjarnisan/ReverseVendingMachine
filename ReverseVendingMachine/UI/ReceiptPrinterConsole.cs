@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ReverseVendingMachine.UI
 {
-    internal class ReceiptPrinterConsole : IReceiptPrinter, IDisposable
+    internal class ReceiptPrinterConsole : IReceiptPrinter
     {
         public void PrintReceipt(DepositingSession depositingSession)
         {

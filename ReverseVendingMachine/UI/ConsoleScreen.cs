@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ReverseVendingMachine.UI
 {
-    internal class ConsoleScreen : IScreen, IDisposable
+    internal class ConsoleScreen : IScreen
     {
         internal ConsoleScreen() { }
 

@@ -4,10 +4,10 @@ namespace ReverseVendingMachine.Interfaces
 {
     internal interface IScanner : IDisposable
     {
-        event EventHandler<ScannerState>? ScannerStateChanged;
-        event EventHandler<ItemType>? ItemScanned;
-        event EventHandler<FailedScanReason>? ScanFailed;
+        internal event EventHandler<ScannerState>? ScannerStateChanged;
+        internal event EventHandler<ItemType>? ItemScanned;
+        internal event EventHandler<FailedScanReason>? ScanFailed;
 
-        ScannerState ScanningState { get; }
+        internal ScannerState ScanningState { get; }
     }
 }
