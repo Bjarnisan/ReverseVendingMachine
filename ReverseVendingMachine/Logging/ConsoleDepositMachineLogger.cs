@@ -28,7 +28,6 @@ namespace ReverseVendingMachine.Logging
         public void Dispose()
         {
             // nothing to dispose
-            GC.SuppressFinalize(this);
         }
     }
 }
