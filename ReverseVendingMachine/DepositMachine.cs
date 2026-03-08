@@ -1,10 +1,6 @@
 ﻿using ReverseVendingMachine.Enums;
 using ReverseVendingMachine.Interfaces;
 using ReverseVendingMachine.Models;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ReverseVendingMachine
 {

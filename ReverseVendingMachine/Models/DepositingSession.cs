@@ -1,8 +1,5 @@
 ﻿using ReverseVendingMachine.Enums;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ReverseVendingMachine.Models
 {

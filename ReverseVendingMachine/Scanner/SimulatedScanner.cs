@@ -1,14 +1,11 @@
 ﻿using ReverseVendingMachine.Enums;
 using ReverseVendingMachine.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace ReverseVendingMachine.Scanner
 {
     internal class SimulatedScanner : IScanner
     {
+        private readonly SemaphoreSlim _scanningStateLock = new(1, 1);
         private ScannerState scannerState_backing = ScannerState.ReadyToScan;
 
         public event EventHandler<ScannerState>? ScannerStateChanged;
@@ -31,48 +28,54 @@ namespace ReverseVendingMachine.Scanner
             {
                 return;
             }
-            else if (ScanningState == ScannerState.ScanningItem)
+
+            if (!await _scanningStateLock.WaitAsync(0))
             {
                 ScanFailed?.Invoke(this, FailedScanReason.ScannerBusy);
                 return;
             }
-            else if (ScanningState != ScannerState.ReadyToScan)
-            {
-                // shouldn't be able to get here
-                ScanFailed?.Invoke(this, FailedScanReason.Unknown);
-                ScanningState = ScannerState.InErrorState;
-                return;
-            }
 
-            ScanningState = ScannerState.ScanningItem;
-
-            switch (itemType)
+            try
             {
-                case ItemType.Can:
-                    await Task.Delay(500);
-                    break;
-                case ItemType.Bottle:
-                    await Task.Delay(1000);
-                    break;
-                case ItemType.InvalidItem:
-                    await Task.Delay(2000);
-                    break;
-                case ItemType.Unknown:
-                    break;
-                default:
-                    // shouldn't be able to get here
-                    ScanFailed?.Invoke(this, FailedScanReason.Unknown);
-                    ScanningState = ScannerState.InErrorState;
+                if (ScanningState == ScannerState.InErrorState)
+                {
                     return;
-            }
+                }
 
-            ScanningState = ScannerState.ReadyToScan;
-            ItemScanned?.Invoke(this, itemType);
+                ScanningState = ScannerState.ScanningItem;
+
+                switch (itemType)
+                {
+                    case ItemType.Can:
+                        await Task.Delay(500);
+                        break;
+                    case ItemType.Bottle:
+                        await Task.Delay(1000);
+                        break;
+                    case ItemType.InvalidItem:
+                        await Task.Delay(2000);
+                        break;
+                    case ItemType.Unknown:
+                        break;
+                    default:
+                        // shouldn't be able to get here
+                        ScanFailed?.Invoke(this, FailedScanReason.Unknown);
+                        ScanningState = ScannerState.InErrorState;
+                        return;
+                }
+
+                ScanningState = ScannerState.ReadyToScan;
+                ItemScanned?.Invoke(this, itemType);
+            }
+            finally
+            {
+                _scanningStateLock.Release();
+            }
         }
 
         public void Dispose()
         {
-            // nothing to dispose
+            _scanningStateLock.Dispose();
         }
     }
 }
