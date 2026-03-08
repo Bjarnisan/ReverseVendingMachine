@@ -1,4 +1,4 @@
-namespace ReverseVendingMachine.enums
+namespace ReverseVendingMachine.Enums
 {
     internal enum FailedScanReason
     {
